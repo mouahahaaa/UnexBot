@@ -189,7 +189,7 @@ async def date_observer():
     '''Routine qui vient scruter quand un match va arriver et l'annonce si c'est le cas'''
     if not var.emergency:
         dateList = wks1.col_values(var.time_column)
-        announced = wks1.col_values(var.time_column + 1)
+        announced = wks1.col_values(var.Annonce_column)
         if len(dateList) <= 1:
             return
         if len(announced) <= 1:
@@ -199,19 +199,15 @@ async def date_observer():
                 n_date = await date_f.split_date(date)
                 calendar = n_date[0][2] + n_date[0][1] + n_date[0][0]
                 timed = n_date[1][0] + n_date[1][1]
-                generic_calendar = str(datetime.datetime.now().year) + str(datetime.datetime.now().month) \
-                                   + str(datetime.datetime.now().day)
-                generic_timed = str(datetime.datetime.now().hour) + str(datetime.datetime.now().minute)
-                if datetime.datetime.now().hour < 10:
-                    generic_timed = "0" + generic_timed
-                if datetime.datetime.now().minute < 10:
-                    generic_timed = generic_timed[0:2] + "0" + generic_timed[2:]
-                if int(timed) < 100:
-                    timed = '24' + timed
-                if abs(int(calendar) - int(generic_calendar)) == 0 and abs(int(timed) - int(generic_timed)) <= var.deadline:
-                    if announced[dateList.index(date)] == '0':
-                        wks1.update_cell(dateList.index(date) + 1, var.time_column + 1, '1')
-                        await alert_match_local(dateList.index(date)+1)
+
+                mDate = datetime.datetime(year=int(calendar[0:4]), month=int(calendar[4:6]), day=int(calendar[6:]), hour=int(timed[0:2]), minute=int(timed[2:]))
+                nDate = datetime.datetime.now()
+                tdelta = mDate - nDate
+                if tdelta.days == 0 and mDate.date() - nDate.date() != 0:
+                    if int(tdelta.split(":")[0:2]) < var.deadline:
+                        if announced[dateList.index(date)] == '0':
+                            wks1.update_cell(dateList.index(date) + 1, var.time_column + 1, '1')
+                            await alert_match_local(dateList.index(date) + 1)
 
 
 async def alert_match_public(_num):

@@ -1,6 +1,6 @@
 TEAM_SIZE = 6
 
-deadline = 100 #1h
+deadline = 1 #1h
 offset = 2
 
 emergency = False
