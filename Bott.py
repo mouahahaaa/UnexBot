@@ -3,6 +3,7 @@ UNEXPECTED
 This is a python program to create a tournament bot for Dofus.
 
 Version : 0.1
+1st version deployed on Vultr serv.
 
 Authors :
 *Popoelo
