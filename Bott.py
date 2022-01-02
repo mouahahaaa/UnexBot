@@ -205,7 +205,7 @@ async def date_observer():
                 nDate = datetime.datetime.now()
                 tdelta = mDate - nDate
                 if tdelta.days == 0 and mDate.date() - nDate.date() != 0:
-                    if int(tdelta.split(":")[0:2]) < var.deadline:
+                    if tdelta.total_seconds() < 3600:#var.deadline:
                         if announced[dateList.index(date)] == '0':
                             wks1.update_cell(dateList.index(date) + 1, var.time_column + 1, '1')
                             await alert_match_local(dateList.index(date) + 1)
@@ -236,7 +236,7 @@ async def alert_match_local(_num):
             local_chann = chann.id
     if local_chann is not None:
         msg = f"@here\n" \
-              f":flag_fr: Vos équipes s'affronteront dans 1 heure. Voici les compositions que vous avez choisi\n" \
+              f":flag_fr: Vos équipes s'affronteront dans 1 heure. Voici les compositions que vous avez choisi :\n" \
               f":flag_gb: The match is scheduled in 1h. There are the team comps both of your teams chose to play with:\n\n"
         msg += f"{wks1.cell(_num,var.A_column).value} :crossed_swords: {wks1.cell(_num,var.B_column).value}\n \n"
         msg += f"Pour le 1V1 / For the 1V1 :\n"
