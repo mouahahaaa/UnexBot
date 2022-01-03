@@ -1,6 +1,7 @@
 TEAM_SIZE = 6
 
 deadline = 3600 #1h
+decalage_horaire = 3600 #1h
 offset = 2
 
 emergency = False

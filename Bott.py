@@ -206,7 +206,7 @@ async def date_observer():
                 tdelta = mDate - nDate
                 if tdelta.days == 0 and mDate.date() - nDate.date() != 0:
                     print(tdelta.total_seconds())
-                    if tdelta.total_seconds() <= var.deadline:
+                    if (tdelta.total_seconds() - var.decalage_horaire) <= var.deadline:
                         if announced[dateList.index(date)] == '0':
                             wks1.update_cell(dateList.index(date) + 1, var.time_column + 1, '1')
                             await alert_match_local(dateList.index(date) + 1)
