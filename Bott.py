@@ -197,6 +197,7 @@ async def parser_infos(_infos):
 
 async def date_observer():
     '''Routine qui vient scruter quand un match va arriver et l'annonce si c'est le cas'''
+    print("dateobserver")
     if not var.emergency:
         dateList = wks1.col_values(var.time_column)
         announced = wks1.col_values(var.Annonce_column)
@@ -204,9 +205,10 @@ async def date_observer():
             return
         if len(announced) <= 1:
             return
-        for date in dateList[2:]:
-            if date != '':
-                n_date = await date_f.split_date(date)
+        print(dateList)
+        for i in range(2, len(dateList)):
+            if dateList[i] != '':
+                n_date = await date_f.split_date(dateList[i])
                 calendar = n_date[0][2] + n_date[0][1] + n_date[0][0]
                 timed = n_date[1][0] + n_date[1][1]
 
@@ -215,10 +217,9 @@ async def date_observer():
                 tdelta = mDate - nDate
                 if tdelta.days == 0 and mDate.date() - nDate.date() != 0:
                     if (tdelta.total_seconds() - var.decalage_horaire) <= var.deadline:
-                        if announced[dateList.index(date)] == '0':
-                            wks1.update_cell(dateList.index(date) + 1, var.time_column + 1, '1')
-                            await alert_match_local(dateList.index(date) + 1)
-                            return
+                        if announced[i] == '0':
+                            wks1.update_cell(i + 1, var.time_column + 1, '1')
+                            await alert_match_local(i + 1)
 
 
 async def alert_match_public(_num, ateam, bteam):
