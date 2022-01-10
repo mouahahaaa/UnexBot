@@ -141,7 +141,7 @@ async def set_arbitre(_message):
                 arbitres += _message.content.split()[2+k] + " "
                 wks1.update_cell(match_IDs.index(id) + 1, var.Arbitre_column, arbitres)
                 await _message.add_reaction(await bot.get_guild(var.guild_id).fetch_emoji(var.CheckMark_id))
-            if tempArbitre != '':
+            if tempArbitre is not None:
                 await _message.channel.send(f"Le(s) ancien(s) arbitre(s) {tempArbitre} ont été remplacés par"
                                             f" {wks1.cell(int(id)+var.offset, var.Arbitre_column).value}")
 
@@ -218,6 +218,7 @@ async def date_observer():
                         if announced[dateList.index(date)] == '0':
                             wks1.update_cell(dateList.index(date) + 1, var.time_column + 1, '1')
                             await alert_match_local(dateList.index(date) + 1)
+                            return
 
 
 async def alert_match_public(_num, ateam, bteam):
@@ -243,11 +244,11 @@ async def alert_match_local(_num):
               f":flag_fr: Vos équipes s'affronteront dans 1 heure. Voici les compositions que vous avez choisi :\n" \
               f":flag_gb: The match is scheduled in 1h. There are the team comps both of your teams chose to play with:\n\n"
         msg += f"{L[var.A_column-1]} :crossed_swords: {L[var.B_column-1]}\n \n"
-        msg += f"Pour le 1V1 / For the 1V1 :\n"
+        msg += f"**[1V1]**\n"
         msg += f"{L[var.OsA_column-1]} :vs: {L[var.OsB_column-1]}\n \n"
-        msg += f"Pour le 2V2 / For the 2V2 :\n"
+        msg += f"**[2V2]**\n"
         msg += f"{L[var.TsA_column-1]} :vs: {L[var.TsB_column-1]}\n \n"
-        msg += f"Pour le 3V3 / For the 3V3 :\n"
+        msg += f"**[3V3]**\n"
         msg += f"{L[var.THsA_column-1]} :vs: {L[var.THsB_column-1]}"
 
         message = await bot.get_guild(var.guild_id).get_channel(local_chann).send(msg)
